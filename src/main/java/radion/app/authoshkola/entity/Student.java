@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import radion.app.authoshkola.entity.roles.RolesEnum;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "student")
@@ -31,7 +33,7 @@ public class Student {
 
     @Column(nullable = false)
     @NotNull
-    private Enum<RolesEnum> roles;
+    private List<RolesEnum> roles;
 
     @Column(nullable = false)
     @NotNull
