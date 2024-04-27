@@ -1,9 +1,9 @@
-package radion.app.authoshkola.entity;
+package radion.app.authoshkola.entity.dto;
 
 
 import jakarta.validation.constraints.NotNull;
 
-public class StudentLoginDTO extends Student{
+public class StudentLoginDTO{
 
     @NotNull
     private String email;
