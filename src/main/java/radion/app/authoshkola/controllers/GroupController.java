@@ -40,7 +40,7 @@ public class GroupController {
 
     @PostMapping("/create")
     private String createGroup(Groups groups, Model model){
-        groupsService.save();
+        groupsService.save(groups);
         model.addAttribute("instructor", instructorService.findAll());
         return "group/create_group";
     }
