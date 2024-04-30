@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class Student {
     @NotNull
     private Long id;
@@ -13,7 +12,6 @@ public class Student {
     @NotNull
     private String name;
 
-    @NotNull
     private String email;
 
     @NotNull
@@ -25,7 +23,6 @@ public class Student {
     @NotNull
     private Integer age;
 
-    @NotNull
     private Long group_id;
 
     @NotNull

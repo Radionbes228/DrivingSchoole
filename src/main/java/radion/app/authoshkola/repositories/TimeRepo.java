@@ -1,5 +1,6 @@
 package radion.app.authoshkola.repositories;
 
+import org.springframework.stereotype.Repository;
 import radion.app.authoshkola.entity.schedule.Time;
 
 import java.util.List;

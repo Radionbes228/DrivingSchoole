@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface InstructorRepo {
     List<Instructors> findAll();
-    Instructors findById();
+    Instructors findById(Long id);
     void save(Instructors instructor);
     void update(Instructors instructor);
     void delete(Long id);

@@ -1,7 +1,6 @@
 package radion.app.authoshkola.service;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import radion.app.authoshkola.ConnectionJDBC;
 import radion.app.authoshkola.entity.users.Student;
@@ -13,25 +12,24 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class StudentService implements StudentRepo {
     private ConnectionJDBC connectionJDBC;
 
-    private String getAll = """
-            select * from student;
+    private final String getAll = """
+            select * from student order by name;
             """;
-    private String getById = """
+    private final String getById = """
             select * from student where student_id = ?;
             """;
-    private String saveStudent = """
+    private final String saveStudent = """
             insert into student(name, email, password, phone_number, age, groups_id, roles, is_studying) values(?,?,?,?,?,?,?,?);
             """;
-    private String updateStudent = """
+    private final String updateStudent = """
             update student 
                 set name = ?, email = ?, password = ?, phone_number = ?, age = ?, groups_id = ?, roles = ?, is_studying = ? 
                     where student_id = ?;
             """;
-    private String delete = """
+    private final String delete = """
             delete from student where student_id = ?;
             """;
 
@@ -43,13 +41,17 @@ public class StudentService implements StudentRepo {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(getAll);
             while (resultSet.next()){
-                Student student = Student.builder()
-                        .name(resultSet.getString(1))
-                        .email(resultSet.getString(2))
-                        .password(resultSet.getString(3))
-                        .age(resultSet.getInt(4))
-                        .group_id(resultSet.getLong(5))
-                        .build();
+                Student student = new Student();
+                student.setId(resultSet.getLong(1));
+                student.setName(resultSet.getString(2));
+                student.setEmail(resultSet.getString(3));
+                student.setPassword(resultSet.getString(4));
+                student.setPhoneNumber(resultSet.getString(5));
+                student.setAge(resultSet.getInt(6));
+                student.setGroup_id(resultSet.getLong(7));
+                student.setRoles(resultSet.getString(8));
+                student.setIsStudying(resultSet.getBoolean(9));
+
                 studentList.add(student);
             }
             connection.close();
@@ -67,17 +69,19 @@ public class StudentService implements StudentRepo {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             connection.close();
-            return Student.builder()
-                    .id(resultSet.getLong(1))
-                    .name(resultSet.getString(2))
-                    .email(resultSet.getString(3))
-                    .password(resultSet.getString(4))
-                    .phoneNumber(resultSet.getString(5))
-                    .age(resultSet.getInt(6))
-                    .group_id(resultSet.getLong(7))
-                    .roles(resultSet.getString(8))
-                    .isStudying(resultSet.getBoolean(9))
-                    .build();
+
+            Student student = new Student();
+            student.setId(resultSet.getLong(1));
+            student.setName(resultSet.getString(2));
+            student.setEmail(resultSet.getString(3));
+            student.setPassword(resultSet.getString(4));
+            student.setPhoneNumber(resultSet.getString(5));
+            student.setAge(resultSet.getInt(6));
+            student.setGroup_id(resultSet.getLong(7));
+            student.setRoles(resultSet.getString(8));
+            student.setIsStudying(resultSet.getBoolean(9));
+
+            return student;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

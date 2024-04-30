@@ -4,12 +4,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
-@Builder
 public class Time {
     @NotNull
     private Long id;
 
     @NotNull
-    private Time time;
+    private Timestamp time;
 }
