@@ -1,7 +1,6 @@
 package radion.app.authoshkola.entity.users;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -25,5 +24,5 @@ public class Instructors {
     private String phoneNumber;
 
     @NotNull
-    private String roles;
+    private String role;
 }

@@ -12,6 +12,5 @@ public class Groups {
     @NotNull
     private Integer groupNumber;
 
-    @NotNull
     private Long instructorId;
 }

@@ -20,7 +20,7 @@ public class GroupController {
 
     @GetMapping
     private String allGroup(Model model){
-        model.addAttribute("group", groupsService.findAll());
+        model.addAttribute("groups", groupsService.findAll());
         return "group/groups";
     }
 
@@ -28,20 +28,33 @@ public class GroupController {
     private String infoGroup(@PathVariable("id") Long id, Model model){
         Groups groups = groupsService.findById(id);
         model.addAttribute("group", groups);
-        model.addAttribute("instructor", instructorService.findById(groups.getId()));
+        model.addAttribute("count", groupsService.countStudent(id));
+        model.addAttribute("instructor", instructorService.findById(groups.getInstructorId()));
         return "group/info_group";
     }
 
     @GetMapping("/create")
     private String createFormGroup(Model model){
-        model.addAttribute("instructor", instructorService.findAll());
+        model.addAttribute("instructors", instructorService.findAll());
         return "group/create_group";
     }
 
     @PostMapping("/create")
-    private String createGroup(Groups groups, Model model){
+    private String createGroup(Groups groups){
         groupsService.save(groups);
-        model.addAttribute("instructor", instructorService.findAll());
-        return "group/create_group";
+        return "redirect:/groups";
+    }
+
+    @GetMapping("/update/{id}")
+    private String updateFormGroup(@PathVariable("id") Long id, Model model){
+        model.addAttribute("instructor", instructorService.findById(id));
+        model.addAttribute("group", groupsService.findById(id));
+        return "group/update_group";
+    }
+
+    @PostMapping("/update")
+    private String updateGroup(Groups groups){
+        groupsService.update(groups);
+        return "redirect:/groups";
     }
 }

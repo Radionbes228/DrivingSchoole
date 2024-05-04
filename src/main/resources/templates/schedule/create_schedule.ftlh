@@ -11,13 +11,15 @@
 
     <form action="/schedules/create" method="post">
         <label>
-            ${year}
+            Год: ${year}
             <input hidden="hidden" name="year" type="text" value="${year}" readonly>
         </label><br>
         <label>
+            Дата начала учебной недели
             <input name="startWeek" type="date">
         </label><br>
         <label>
+            Дата конца учебной недели
             <input name="endWeek" type="date">
         </label><br>
         <input type="submit" value="Сохранить">

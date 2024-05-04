@@ -15,6 +15,9 @@ import java.util.List;
 public class GroupsService implements GroupsRepo {
     private ConnectionJDBC connectionJDBC;
 
+    private final String countStudents = """
+            select COUNT(*) as count from student where student.groups_id = ?;
+            """;
     private final String getAll = """
             select * from groups;
             """;
@@ -63,6 +66,7 @@ public class GroupsService implements GroupsRepo {
             PreparedStatement preparedStatement = connection.prepareStatement(getById);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             connection.close();
 
             Groups groups = new Groups();
@@ -113,6 +117,20 @@ public class GroupsService implements GroupsRepo {
             preparedStatement.setLong(2, group.getId());
             preparedStatement.execute();
             connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Integer countStudent(Long id) {
+        try (Connection connection = connectionJDBC.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(countStudents)) {
+                preparedStatement.setLong(1, id);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    resultSet.next();
+                    return resultSet.getInt("count");
+                }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -12,12 +12,19 @@ import radion.app.authoshkola.entity.users.Student;
 import radion.app.authoshkola.service.GroupsService;
 import radion.app.authoshkola.service.StudentService;
 
+import java.beans.Transient;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/students")
 public class StudentController {
     private StudentService studentService;
     private GroupsService groupsService;
+
+    @GetMapping("/home-page")
+    public String homePage(){
+        return "mainPages/student_page";
+    }
 
     @GetMapping
     public String allStudent(Model model){
@@ -41,6 +48,9 @@ public class StudentController {
 
     @PostMapping("/create")
     public String saveStudent(Student student){
+        if(student.getGroup_id() == -1){
+            student.setGroup_id(null);
+        }
         studentService.save(student);
         return "redirect:/students";
     }

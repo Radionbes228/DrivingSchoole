@@ -10,4 +10,5 @@ public interface GroupsRepo {
     void save(Groups group);
     void delete(Long id);
     void update(Groups group);
+    Integer countStudent(Long id);
 }

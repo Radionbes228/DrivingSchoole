@@ -46,7 +46,7 @@ public class InstructorService implements InstructorRepo {
                 instructors.setPassword(resultSet.getString(4));
                 instructors.setAge(resultSet.getInt(5));
                 instructors.setPhoneNumber(resultSet.getString(6));
-                instructors.setRoles(resultSet.getString(7));
+                instructors.setRole(resultSet.getString(7));
 
                 instructorsList.add(instructors);
             }
@@ -66,6 +66,7 @@ public class InstructorService implements InstructorRepo {
             ResultSet resultSet = preparedStatement.executeQuery();
             connect.close();
 
+            resultSet.next();
             Instructors instructors = new Instructors();
             instructors.setId(resultSet.getLong(1));
             instructors.setName(resultSet.getString(2));
@@ -73,7 +74,7 @@ public class InstructorService implements InstructorRepo {
             instructors.setPassword(resultSet.getString(4));
             instructors.setAge(resultSet.getInt(5));
             instructors.setPhoneNumber(resultSet.getString(6));
-            instructors.setRoles(resultSet.getString(7));
+            instructors.setRole(resultSet.getString(7));
 
             return instructors;
         } catch (SQLException e) {
@@ -91,8 +92,8 @@ public class InstructorService implements InstructorRepo {
             preparedStatement.setString(3, instructor.getPassword());
             preparedStatement.setInt(4, instructor.getAge());
             preparedStatement.setString(5, instructor.getPhoneNumber());
-            preparedStatement.setString(6, instructor.getRoles());
-            preparedStatement.executeQuery();
+            preparedStatement.setString(6, instructor.getRole());
+            preparedStatement.execute();
             connect.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -109,9 +110,9 @@ public class InstructorService implements InstructorRepo {
             preparedStatement.setString(3, instructor.getPassword());
             preparedStatement.setInt(4, instructor.getAge());
             preparedStatement.setString(5, instructor.getPhoneNumber());
-            preparedStatement.setString(6, instructor.getRoles());
+            preparedStatement.setString(6, instructor.getRole());
             preparedStatement.setLong(7, instructor.getId());
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
             connect.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -124,7 +125,7 @@ public class InstructorService implements InstructorRepo {
             Connection connection = connectionJDBC.connect();
             PreparedStatement preparedStatement = connection.prepareStatement(delete);
             preparedStatement.setLong(1, id);
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

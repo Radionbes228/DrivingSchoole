@@ -5,54 +5,78 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="/static/default_style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Document</title>
 </head>
 <body>
-    <form method="post" action="/students/create">
-        <label>
-            ФИО
-            <input type="text" name="name"><br>
-        </label>
-        <label>
-            Email
-            <input type="text" name="email"><br>
-        </label>
-        <label>
-            Пароль
-            <input type="text" name="password"><br>
-        </label>
-        <label>
-            Номер телефона
-            <input type="text" name="phoneNumber"><br>
-        </label>
-        <label>
-            Возраст
-            <input type="text" name="age"><br>
-        </label>
-        <label>
-            Группа
-            <select name="group_id">
-                <#if groups?has_content>
-                    <#list groups as group>
-                        <option value="${group.id}">${group.groupNumber}</option>
-                    </#list>
-                <#else>
-                    <option value="null">Группы не созданы</option>
-                </#if>
-            </select><br>
-        </label>
-        <label hidden="hidden">
-            <input hidden="hidden" name="roles" value="${role}">
-        </label>
-        <label>
-            Статус обучения
-            <select name="isStudying">
-                <option value="true">Учиться</option>
-                <option value="false">Успешно закончил</option>
-            </select><br>
-        </label>
 
-        <input type="submit" value="Сохранить">
-    </form>
+    <div class="container text-center">
+        <div class="row align-items-center">
+            <div class="col">
+                <form method="post" action="/students/create" class="form">
+                    <div style="max-width: 700px; margin: 0 auto; align-content: center">
+                        <p class="h3">Создание студента</p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">ФИО</span>
+                            <input name="name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Почта</span>
+                            <input name="email" type="email" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Пароль</span>
+                            <input name="password" type="password" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Номер телефона</span>
+                            <input name="phoneNumber" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Возраст</span>
+                            <input name="age" type="number" min="16" max="120" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+
+                        <div class="form-floating">
+                            <select name="group_id" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                <#if groups?has_content>
+                                    <#list groups as group>
+                                        <option value="${group.id}">${group.groupNumber}</option>
+                                    </#list>
+                                <#else>
+                                    <option value="null">Группы не созданы</option>
+                                </#if>
+                            </select>
+                            <label for="floatingSelect">Группа</label>
+                        </div>
+                        <label hidden="hidden">
+                            <input hidden="hidden" name="roles" value="${role}">
+                        </label>
+                        <label hidden="hidden">
+                            <input hidden="hidden" name="isStudying" value="true">
+                        </label><br>
+
+                        <div class="container text-center">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <input class="btn btn-outline-primary" type="submit" value="Создать">
+                                </div>
+                                <div class="col">
+                                    <a href="/students"><input class="btn btn-outline-primary" type="button" value="На главную"></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 </html>
