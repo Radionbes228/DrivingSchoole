@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import radion.app.authoshkola.entity.dto.StudentUpdateDto;
 import radion.app.authoshkola.entity.roles.RolesEnum;
 import radion.app.authoshkola.entity.users.Student;
 import radion.app.authoshkola.service.GroupsService;
@@ -34,8 +35,9 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public String infoStudent(@PathVariable("id") Long id, Model model){
-        model.addAttribute("student", studentService.findById(id));
-        model.addAttribute("group", groupsService.findById(id));
+        Student student = studentService.findById(id);
+        model.addAttribute("student", student);
+        model.addAttribute("group", groupsService.findById(student.getGroup_id()));
         return "student/student_info";
     }
 
@@ -48,9 +50,6 @@ public class StudentController {
 
     @PostMapping("/create")
     public String saveStudent(Student student){
-        if(student.getGroup_id() == -1){
-            student.setGroup_id(null);
-        }
         studentService.save(student);
         return "redirect:/students";
     }
@@ -65,7 +64,7 @@ public class StudentController {
     }
 
     @PostMapping("/update")
-    public String updateStudent(Student student){
+    public String updateStudent(StudentUpdateDto student){
         studentService.update(student);
         return "redirect:/students";
     }

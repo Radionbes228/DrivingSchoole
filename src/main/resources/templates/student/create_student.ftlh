@@ -31,7 +31,7 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Номер телефона</span>
-                            <input name="phoneNumber" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                            <input name="phoneNumber" type="tel" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Возраст</span>
@@ -54,7 +54,7 @@
                             <input hidden="hidden" name="roles" value="${role}">
                         </label>
                         <label hidden="hidden">
-                            <input hidden="hidden" name="isStudying" value="true">
+                            <input hidden="hidden" name="isStudying" value="false">
                         </label><br>
 
                         <div class="container text-center">
@@ -63,11 +63,10 @@
                                     <input class="btn btn-outline-primary" type="submit" value="Создать">
                                 </div>
                                 <div class="col">
-                                    <a href="/students"><input class="btn btn-outline-primary" type="button" value="На главную"></a>
+                                    <a href="/students"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </form>
             </div>

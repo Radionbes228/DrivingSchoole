@@ -38,22 +38,20 @@ public class GroupsService implements GroupsRepo {
     @Override
     public List<Groups> findAll() {
         List<Groups> groupsList = new ArrayList<>();
-        try {
-            Connection connection = connectionJDBC.connect();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(getAll);
+        try (Connection connection = connectionJDBC.connect();
+             Statement statement = connection.createStatement()){
 
-            while (resultSet.next()){
-                Groups groups = new Groups();
-                groups.setId(resultSet.getLong(1));
-                groups.setGroupNumber(resultSet.getInt(2));
-                groups.setInstructorId(resultSet.getLong(3));
+            try (ResultSet resultSet = statement.executeQuery(getAll)) {
+                while (resultSet.next()) {
+                    Groups groups = new Groups();
+                    groups.setId(resultSet.getLong(1));
+                    groups.setGroupNumber(resultSet.getInt(2));
+                    groups.setInstructorId(resultSet.getLong(3));
 
-                groupsList.add(groups);
+                    groupsList.add(groups);
+                }
+                return groupsList;
             }
-
-            connection.close();
-            return groupsList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -61,20 +59,21 @@ public class GroupsService implements GroupsRepo {
 
     @Override
     public Groups findById(Long id) {
-        try {
-            Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(getById);
+        try (Connection connection = connectionJDBC.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(getById)){
+
             preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            connection.close();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                connection.close();
 
-            Groups groups = new Groups();
-            groups.setId(resultSet.getLong(1));
-            groups.setGroupNumber(resultSet.getInt(2));
-            groups.setInstructorId(resultSet.getLong(3));
+                Groups groups = new Groups();
+                groups.setId(resultSet.getLong(1));
+                groups.setGroupNumber(resultSet.getInt(2));
+                groups.setInstructorId(resultSet.getLong(3));
 
-            return groups;
+                return groups;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -82,13 +81,12 @@ public class GroupsService implements GroupsRepo {
 
     @Override
     public void save(Groups group) {
-        try {
-            Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(save);
+        try (Connection connection = connectionJDBC.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(save)){
+
             preparedStatement.setLong(1, group.getGroupNumber());
             preparedStatement.setLong(2, group.getInstructorId());
             preparedStatement.execute();
-            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,12 +94,11 @@ public class GroupsService implements GroupsRepo {
 
     @Override
     public void delete(Long id) {
-        try {
-            Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(delete);
+        try (Connection connection = connectionJDBC.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(delete)){
+
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
-            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -109,14 +106,13 @@ public class GroupsService implements GroupsRepo {
 
     @Override
     public void update(Groups group) {
-        try {
-            Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(update);
+        try (Connection connection = connectionJDBC.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(update)){
+
             preparedStatement.setLong(1, group.getGroupNumber());
             preparedStatement.setLong(2, group.getInstructorId());
             preparedStatement.setLong(2, group.getId());
             preparedStatement.execute();
-            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
