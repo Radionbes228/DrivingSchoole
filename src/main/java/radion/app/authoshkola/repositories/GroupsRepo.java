@@ -1,6 +1,7 @@
 package radion.app.authoshkola.repositories;
 
-import radion.app.authoshkola.entity.schedule.Groups;
+import radion.app.authoshkola.model.dto.GroupInfoDto;
+import radion.app.authoshkola.model.schedule.Groups;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface GroupsRepo {
     void delete(Long id);
     void update(Groups group);
     Integer countStudent(Long id);
+    List<GroupInfoDto> getListForGroupsDTO();
+
 }

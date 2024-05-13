@@ -1,6 +1,6 @@
 package radion.app.authoshkola.repositories;
 
-import radion.app.authoshkola.entity.users.Admin;
+import radion.app.authoshkola.model.users.Admin;
 
 import java.util.List;
 

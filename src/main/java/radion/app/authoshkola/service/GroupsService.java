@@ -3,7 +3,8 @@ package radion.app.authoshkola.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import radion.app.authoshkola.ConnectionJDBC;
-import radion.app.authoshkola.entity.schedule.Groups;
+import radion.app.authoshkola.model.dto.GroupInfoDto;
+import radion.app.authoshkola.model.schedule.Groups;
 import radion.app.authoshkola.repositories.GroupsRepo;
 
 import java.sql.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupsService implements GroupsRepo {
     private ConnectionJDBC connectionJDBC;
+    private InstructorService instructorService;
 
     private final String countStudents = """
             select COUNT(*) as count from student where student.groups_id = ?;
@@ -111,7 +113,7 @@ public class GroupsService implements GroupsRepo {
 
             preparedStatement.setLong(1, group.getGroupNumber());
             preparedStatement.setLong(2, group.getInstructorId());
-            preparedStatement.setLong(2, group.getId());
+            preparedStatement.setLong(3, group.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -130,5 +132,20 @@ public class GroupsService implements GroupsRepo {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<GroupInfoDto> getListForGroupsDTO(){
+        List<GroupInfoDto> list = new ArrayList<>();
+        for (Groups group: findAll()) {
+            GroupInfoDto groupInfoDto = new GroupInfoDto();
+
+            groupInfoDto.setGroup(group);
+            groupInfoDto.setInstructor(instructorService.findById(group.getInstructorId()));
+            groupInfoDto.setCountStudent(countStudent(group.getId()));
+
+            list.add(groupInfoDto);
+        }
+        return list;
     }
 }

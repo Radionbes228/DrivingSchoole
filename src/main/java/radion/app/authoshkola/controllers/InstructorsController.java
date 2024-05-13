@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import radion.app.authoshkola.entity.roles.RolesEnum;
-import radion.app.authoshkola.entity.users.Instructors;
+import radion.app.authoshkola.model.roles.RolesEnum;
+import radion.app.authoshkola.model.users.Instructors;
+import radion.app.authoshkola.repositories.InstructorRepo;
 import radion.app.authoshkola.service.InstructorService;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/instructors")
 public class InstructorsController {
-    private InstructorService instructorService;
+    private InstructorRepo instructorService;
 
     @GetMapping
     public String allInstructors(Model model){

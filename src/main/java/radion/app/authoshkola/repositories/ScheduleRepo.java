@@ -1,8 +1,9 @@
 package radion.app.authoshkola.repositories;
 
-import radion.app.authoshkola.entity.schedule.Schedule;
+import radion.app.authoshkola.model.schedule.Schedule;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.List;
 
 public interface ScheduleRepo {
@@ -10,4 +11,5 @@ public interface ScheduleRepo {
     Schedule findByYearAndStartWeek(Integer year, Date date);
     Schedule findById(Long id);
     void save(Schedule schedule);
+    void saveAndSchedule();
 }

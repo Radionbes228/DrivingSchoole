@@ -40,8 +40,8 @@
 
 
                 <div class="list-group">
-                    <#if students?has_content>
-                        <#list students as student>
+                    <#if students_group?has_content>
+                        <#list students_group as student, group>
                             <div style="display: flex">
                                 <div style="margin: auto 5px;">
                                     <#if student.isStudying == true>
@@ -63,10 +63,10 @@
                                                 <h6 style="text-align: left">${student.phoneNumber}</h6>
                                             </div>
                                             <div class="col">
-                                                <h6>${student.group_id}</h6>
+                                                <h6>${group.groupNumber}</h6>
                                             </div>
                                             <div class="col">
-                                                <h6>${student.age}</h6>
+                                                <h6>${student.age} лет</h6>
                                             </div>
                                         </div>
                                     </div>

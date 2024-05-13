@@ -55,7 +55,7 @@
                             <label for="floatingSelect">Группа</label>
                         </div>
                         <label hidden="hidden">
-                            <input hidden="hidden" name="roles" value="${student.roles}">
+                            <input hidden="hidden" name="roles" value="${student.getRole}">
                         </label>
                         <div class="row mb-3">
                             <div class="col-sm-10" style="text-align: start">

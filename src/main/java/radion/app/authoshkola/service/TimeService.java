@@ -3,7 +3,7 @@ package radion.app.authoshkola.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import radion.app.authoshkola.ConnectionJDBC;
-import radion.app.authoshkola.entity.schedule.Time;
+import radion.app.authoshkola.model.schedule.Time;
 import radion.app.authoshkola.repositories.TimeRepo;
 
 import java.sql.*;
@@ -17,7 +17,7 @@ public class TimeService implements TimeRepo {
     private ConnectionJDBC connectionJDBC;
 
     private final String getAll = """
-            select * from time;
+            select * from time order by time;
             """;
     private final String getByTime = """
             select * from time where time = ?;
@@ -38,7 +38,7 @@ public class TimeService implements TimeRepo {
             while (resultSet.next()){
                 Time time = new Time();
                 time.setId(resultSet.getLong(1));
-                time.setTime(resultSet.getTimestamp(2));
+                time.setTime(resultSet.getString(2));
 
                 timeList.add(time);
             }
@@ -55,13 +55,13 @@ public class TimeService implements TimeRepo {
         try {
             Connection connection = connectionJDBC.connect();
             PreparedStatement preparedStatement = connection.prepareStatement(getByTime);
-            preparedStatement.setTimestamp(1, time.getTime());
+            preparedStatement.setString(1, time.getTime());
             ResultSet resultSet = preparedStatement.executeQuery();
             connection.close();
 
             Time returnTime = new Time();
             returnTime.setId(resultSet.getLong(1));
-            returnTime.setTime(resultSet.getTimestamp(2));
+            returnTime.setTime(resultSet.getString(2));
 
             return returnTime;
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class TimeService implements TimeRepo {
         try {
             Connection connection = connectionJDBC.connect();
             PreparedStatement preparedStatement = connection.prepareStatement(save);
-            preparedStatement.setTimestamp(1, time.getTime());
+            preparedStatement.setString(1, time.getTime());
             preparedStatement.executeQuery();
             connection.close();
         } catch (SQLException e) {
@@ -91,6 +91,7 @@ public class TimeService implements TimeRepo {
     @Override
     public void delete(Long id) {}
 
+    @Override
     public Integer getYear(){
         return Integer.valueOf(String.valueOf(Year.now()));
     }

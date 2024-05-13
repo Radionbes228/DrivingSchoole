@@ -1,4 +1,4 @@
-package radion.app.authoshkola.entity.roles;
+package radion.app.authoshkola.model.roles;
 
 public enum RolesEnum{
     ADMIN ,

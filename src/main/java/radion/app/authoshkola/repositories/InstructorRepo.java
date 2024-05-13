@@ -1,8 +1,10 @@
 package radion.app.authoshkola.repositories;
 
-import radion.app.authoshkola.entity.users.Instructors;
+import radion.app.authoshkola.model.dto.GroupInfoDto;
+import radion.app.authoshkola.model.users.Instructors;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InstructorRepo {
     List<Instructors> findAll();
@@ -10,4 +12,6 @@ public interface InstructorRepo {
     void save(Instructors instructor);
     void update(Instructors instructor);
     void delete(Long id);
+
+    Optional<Instructors> findByEmail(String email);
 }

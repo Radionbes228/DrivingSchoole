@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import radion.app.authoshkola.entity.schedule.Schedule;
+import radion.app.authoshkola.model.schedule.Schedule;
+import radion.app.authoshkola.repositories.ScheduleRepo;
+import radion.app.authoshkola.repositories.StudentRepo;
+import radion.app.authoshkola.repositories.TimeRepo;
 import radion.app.authoshkola.service.ScheduleService;
 import radion.app.authoshkola.service.StudentService;
 import radion.app.authoshkola.service.TimeService;
@@ -13,12 +16,13 @@ import radion.app.authoshkola.service.TimeService;
 @AllArgsConstructor
 @RequestMapping("/schedules")
 public class ScheduleController {
-    private ScheduleService scheduleService;
-    private TimeService timeService;
-    private StudentService studentService;
+    private ScheduleRepo scheduleService;
+    private TimeRepo timeService;
+    private StudentRepo studentService;
 
     @GetMapping
     private String allSchedule(Model model){
+        scheduleService.saveAndSchedule();
         model.addAttribute("schedules", scheduleService.findAll());
         return "schedule/schedules";
     }

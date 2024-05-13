@@ -1,4 +1,4 @@
-package radion.app.authoshkola.entity.dto;
+package radion.app.authoshkola.model.dto;
 
 import lombok.Data;
 

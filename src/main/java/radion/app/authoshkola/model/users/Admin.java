@@ -1,10 +1,10 @@
-package radion.app.authoshkola.entity.users;
+package radion.app.authoshkola.model.users;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class Instructors {
+public class Admin {
     @NotNull
     private Long id;
 
@@ -18,11 +18,8 @@ public class Instructors {
     private String password;
 
     @NotNull
-    private Integer age;
-
-    @NotNull
     private String phoneNumber;
 
     @NotNull
-    private String role;
+    private String roles;
 }
