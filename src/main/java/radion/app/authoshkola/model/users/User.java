@@ -1,32 +1,23 @@
 package radion.app.authoshkola.model.users;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.sql.Date;
 
 @Data
-public class Student {
-    @NotNull
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
     private Long id;
-
-    @NotNull
+    private String firstName;
     private String name;
-
+    private String lastName;
+    private Date birthday;
     private String email;
-
-    @NotNull
     private String password;
-
-    @NotNull
     private String phoneNumber;
-
-    @NotNull
-    private Integer age;
-
-    private Long group_id;
-
-    @NotNull
     private String role;
-
-    @NotNull
     private Boolean isStudying;
 }

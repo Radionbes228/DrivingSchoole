@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,7 +42,7 @@
                                 <div class="container text-center">
                                     <div class="row align-items-left">
                                         <div class="col">
-                                            <h6>${instructor.firstName} ${instructor.name}</h6>
+                                            <h6>${instructor.name}</h6>
                                         </div>
                                         <div class="col">
                                             <h6>${instructor.email}</h6>
@@ -63,23 +63,26 @@
     </div>
 </div>
 
-<#if role == roles.ROLE_STUDENT>
     <div class="container text-center">
         <div class="row align-items-center">
             <div class="col">
-                <a href="/student/student-profile/1">Назад</a>
+                <#if role = "ROLE_STUDENT">
+                    <#if select_week?has_content>
+                        <a href="/student/profile/${select_week}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                    <#else>
+                        <a href="#"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                    </#if>
+                <#elseif role = "ROLE_INSTRUCTOR">
+                    <#if select_week?has_content>
+                        <a href="/instructor/profile/${select_week}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                    <#else>
+                        <a href="#"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                    </#if>
+                </#if>
+
             </div>
         </div>
     </div>
-<#elseif role == roles.ROLE_INSTRUCTOR>
-    <div class="container text-center">
-        <div class="row align-items-center">
-            <div class="col">
-                <a href="/student/student-profile/1">Назад</a>
-            </div>
-        </div>
-    </div>
-</#if>
 
 
 

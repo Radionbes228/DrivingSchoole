@@ -1,3 +1,4 @@
+/*
 package radion.app.authoshkola.controllers;
 
 import lombok.AllArgsConstructor;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import radion.app.authoshkola.model.schedule.Schedule;
-import radion.app.authoshkola.model.schedule.WeeksStudents;
+import radion.app.authoshkola.model.schedule.Record;
 import radion.app.authoshkola.repositories.*;
 
 import java.security.Principal;
@@ -17,11 +18,11 @@ import java.security.Principal;
 @AllArgsConstructor
 @RequestMapping("/student-weeks")
 public class StudentWeeksController {
-    private WeeksStudentRepo weeksStudentService;
-    private ScheduleRepo scheduleService;
-    private DayRepo dayService;
-    private StudentRepo studentService;
-    private TimeRepo timeService;
+    private WeeksStudentService weeksStudentService;
+    private ScheduleService scheduleService;
+    private DayService dayService;
+    private StudentService studentService;
+    private TimeService timeService;
 
 
 
@@ -64,8 +65,9 @@ public class StudentWeeksController {
     }
 
     @PostMapping("/create")
-    public String recordPost(WeeksStudents weeksStudents){
-        weeksStudentService.save(weeksStudents);
+    public String recordPost(Record record){
+        weeksStudentService.save(record);
         return "redirect:/student_weeks";
     }
 }
+*/

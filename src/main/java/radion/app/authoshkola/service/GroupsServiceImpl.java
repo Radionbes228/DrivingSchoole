@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import radion.app.authoshkola.ConnectionJDBC;
 import radion.app.authoshkola.model.dto.GroupInfoDto;
 import radion.app.authoshkola.model.schedule.Groups;
-import radion.app.authoshkola.repositories.GroupsRepo;
+import radion.app.authoshkola.repositories.GroupService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,27 +13,29 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class GroupsService implements GroupsRepo {
+public class GroupsServiceImpl implements GroupService {
     private ConnectionJDBC connectionJDBC;
-    private InstructorService instructorService;
+    private InstructorServiceImpl instructorServiceImpl;
 
     private final String countStudents = """
-            select COUNT(*) as count from student where student.groups_id = ?;
+            select COUNT(*) as count from users 
+                join users_group on users.users_id = users_group.fk_user_id
+                    where users_group.fk_group_id = ?;
             """;
     private final String getAll = """
-            select * from groups;
+            select * from "group";
             """;
     private final String getById = """
-            select * from groups where group_id = ?;
+            select * from "group" where group_id = ?;
             """;
     private final String save = """
-            insert into groups(group_number, instructor_id) values(?,?);
+            insert into "group"(group_number, group_of_instructor_id) values(?,?);
             """;
     private final String delete = """
-            delete from groups where group_id = ?;
+            delete from "group" where group_id = ?;
             """;
     private final String update = """
-            update groups set group_number = ?, instructor_id = ? where group_id = ?;
+            update "group" set group_number = ?, group_of_instructor_id = ? where group_id = ?;
             """;
 
 
@@ -141,7 +143,7 @@ public class GroupsService implements GroupsRepo {
             GroupInfoDto groupInfoDto = new GroupInfoDto();
 
             groupInfoDto.setGroup(group);
-            groupInfoDto.setInstructor(instructorService.findById(group.getInstructorId()));
+            groupInfoDto.setInstructor(instructorServiceImpl.findById(group.getInstructorId()));
             groupInfoDto.setCountStudent(countStudent(group.getId()));
 
             list.add(groupInfoDto);

@@ -2,20 +2,17 @@ package radion.app.authoshkola.model.dto;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 @Data
-public class StudentUpdateDto{
+public class UserUpdateDto {
 
     private Long id;
-
+    private String firstName;
     private String name;
-
+    private String lastName;
+    private Date birthday;
     private String email;
-
     private String phoneNumber;
-
-    private Integer age;
-
-    private Long group_id;
-
     private Boolean isStudying;
 }

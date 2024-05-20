@@ -1,7 +1,7 @@
 package radion.app.authoshkola.model.roles;
 
 public enum RolesEnum{
-    ADMIN ,
-    STUDENT ,
-    INSTRUCTOR
+    ROLE_ADMIN ,
+    ROLE_STUDENT ,
+    ROLE_INSTRUCTOR
 }

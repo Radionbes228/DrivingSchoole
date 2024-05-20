@@ -1,7 +1,7 @@
+/*
 package radion.app.authoshkola.controllers;
 
 import lombok.AllArgsConstructor;
-import org.apache.catalina.Group;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,20 +9,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import radion.app.authoshkola.model.schedule.Groups;
-import radion.app.authoshkola.repositories.GroupsRepo;
-import radion.app.authoshkola.repositories.InstructorRepo;
-import radion.app.authoshkola.repositories.StudentRepo;
-import radion.app.authoshkola.service.GroupsService;
-import radion.app.authoshkola.service.InstructorService;
-import radion.app.authoshkola.service.StudentService;
+import radion.app.authoshkola.repositories.GroupsService;
+import radion.app.authoshkola.repositories.InstructorService;
+import radion.app.authoshkola.repositories.StudentService;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/groups")
 public class GroupController {
-    private GroupsRepo groupsService;
-    private InstructorRepo instructorService;
-    private StudentRepo studentService;
+    private GroupsService groupsService;
+    private InstructorService instructorService;
+    private StudentService studentService;
 
     @GetMapping
     private String allGroup(Model model){
@@ -66,3 +63,4 @@ public class GroupController {
         return "redirect:/groups";
     }
 }
+*/

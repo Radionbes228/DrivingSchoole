@@ -1,15 +1,17 @@
 package radion.app.authoshkola.model.schedule;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.sql.Timestamp;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Time {
     @NotNull
     private Long id;
 
     @NotNull
-    private String time;
+    private java.sql.Time time;
 }

@@ -1,3 +1,4 @@
+/*
 package radion.app.authoshkola.config.security.student;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class StudentUserDetails implements UserDetails {
 
-    private final Student student;
+    private final User student;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,3 +53,4 @@ public class StudentUserDetails implements UserDetails {
         return true;
     }
 }
+*/

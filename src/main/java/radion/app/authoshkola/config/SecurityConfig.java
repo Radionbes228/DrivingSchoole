@@ -1,3 +1,4 @@
+/*
 package radion.app.authoshkola.config;
 
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/students/**").hasRole("STUDENT")
+                        .requestMatchers("/students/student-profile", "/students/student-group-list/**", "/instructors").hasRole("STUDENT")
                         .requestMatchers("/groups/**").hasRole("INSTRUCTOR")
                         .anyRequest().authenticated()
                 )
@@ -43,7 +44,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 
     @Bean
@@ -51,3 +52,4 @@ public class SecurityConfig {
         return new UserDetailsServiceImpl();
     }
 }
+*/

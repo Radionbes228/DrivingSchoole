@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class WeeksStudents {
+public class Record {
 
     @NotNull
     private Long id;
@@ -13,11 +13,11 @@ public class WeeksStudents {
     private Long weekId;
 
     @NotNull
-    private Long dayId;
+    private Long dayOfDayId;
 
     @NotNull
     private Long studentId;
 
     @NotNull
-    private Long time_id;
+    private Long timeId;
 }

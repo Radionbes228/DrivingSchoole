@@ -1,13 +1,17 @@
 package radion.app.authoshkola.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import radion.app.authoshkola.model.schedule.Groups;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
-public class StudentInfoDto {
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class InstructorInfoDto {
     private Long id;
     private String firstName;
     private String name;
@@ -15,8 +19,6 @@ public class StudentInfoDto {
     private Date birthday;
     private String email;
     private String phoneNumber;
-    private Groups group;
+    private List<Groups> groups;
     private String role;
-    private Boolean isStudying;
-
 }

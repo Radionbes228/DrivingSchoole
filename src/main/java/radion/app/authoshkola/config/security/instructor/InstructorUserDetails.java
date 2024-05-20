@@ -1,3 +1,4 @@
+/*
 package radion.app.authoshkola.config.security.instructor;
 
 import lombok.AllArgsConstructor;
@@ -51,3 +52,4 @@ public class InstructorUserDetails implements UserDetails {
         return true;
     }
 }
+*/

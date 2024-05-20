@@ -5,13 +5,14 @@ import radion.app.authoshkola.model.schedule.Groups;
 
 import java.util.List;
 
-public interface GroupsRepo {
+public interface GroupService {
     List<Groups> findAll();
+    Integer countStudent(Long id);
+    List<GroupInfoDto> getListForGroupsDTO();
     Groups findById(Long id);
+
     void save(Groups group);
     void delete(Long id);
     void update(Groups group);
-    Integer countStudent(Long id);
-    List<GroupInfoDto> getListForGroupsDTO();
 
 }
