@@ -12,5 +12,6 @@ public class DayOfWeek {
 
     private Long id;
 
+    @NotNull(message = "{null.point.exception.day.of.week}")
     private String dayName;
 }

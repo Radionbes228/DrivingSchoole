@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class Record {
 
-    @NotNull
     private Long id;
 
     @NotNull

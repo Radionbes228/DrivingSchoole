@@ -29,6 +29,9 @@ public class WeekServiceImpl implements WeekService {
     private final String saveWeek = """
             insert into week(start_date_of_week, last_date_of_week) values(?,?);
             """;
+    private final String getFirstWeek = """
+            select week.week_id from week order by start_date_of_week limit 1;
+            """;
 
     @Override
     public List<Week> findAllWeek() {
@@ -47,6 +50,23 @@ public class WeekServiceImpl implements WeekService {
                 }
             }
             return weekList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Long findFirstWeek() {
+        try (Connection connection = connectionJDBC.connect();
+             Statement statement = connection.createStatement()){
+            try (ResultSet resultSet = statement.executeQuery(getFirstWeek)){
+                if (resultSet.next()){
+                    return resultSet.getLong(1);
+                }else {
+                    return null;
+                }
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

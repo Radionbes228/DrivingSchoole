@@ -1,14 +1,17 @@
 package radion.app.authoshkola.model.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-
+import java.sql.Date;
 
 @Data
-public class RecordViewDto {
-    private Long recordId;
+@AllArgsConstructor
+@NoArgsConstructor
+public class AdminDto {
+    private Long id;
     @NotNull
     private String firstName;
     @NotNull
@@ -16,11 +19,11 @@ public class RecordViewDto {
     @NotNull
     private String lastName;
     @NotNull
-    private String dayOfWeek;
+    private Date birthday;
     @NotNull
-    private Long weekId;
+    private String email;
     @NotNull
-    private Time time;
+    private String phoneNumber;
     @NotNull
-    private Long groupId;
+    private String role;
 }

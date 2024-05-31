@@ -17,13 +17,14 @@ public class RecordServiceImpl implements RecordService {
     private ConnectionJDBC connectionJDBC;
 
     private final String getAllRecordView = """
-            select record.record_id, users.users_first_name, users_name, users.users_last_name, day_of_week.day_name, week.week_id, time.time
-                from record
+        select record.record_id, users.users_first_name, users_name, users.users_last_name, day_of_week.day_name, week.week_id, time.time, ug.fk_group_id
+            from record
                     join day_of_week on day_of_week.day_id = record.fk_day_of_week
                     join users on users.users_id = record.fk_student_id
                     join week on record.fk_week_id = week.week_id
                     join time on record.fk_time_of_record = time.time_id
-                        where week.week_id = ? order by time;
+                    join public.users_group ug on users.users_id = ug.fk_user_id
+            where week.week_id = ? order by time;
     """;
 
     private final String save = """
@@ -50,6 +51,8 @@ public class RecordServiceImpl implements RecordService {
                         recordViewDto.setDayOfWeek(resultSet.getString(5));
                         recordViewDto.setWeekId(resultSet.getLong(6));
                         recordViewDto.setTime(resultSet.getTime(7));
+                        recordViewDto.setGroupId(resultSet.getLong(8));
+
 
                         recordViewDtos.add(recordViewDto);
                     }while (resultSet.next());
@@ -60,11 +63,6 @@ public class RecordServiceImpl implements RecordService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<RecordViewDto> findAllRecordViewByWeekInst(Long id_week) {
-        return null;
     }
 
     @Override

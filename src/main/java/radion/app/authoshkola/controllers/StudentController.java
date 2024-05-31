@@ -1,15 +1,25 @@
 package radion.app.authoshkola.controllers;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import radion.app.authoshkola.model.dto.StudentInfoDto;
+import radion.app.authoshkola.model.dto.UserUpdateDto;
+import radion.app.authoshkola.model.roles.RolesEnum;
 import radion.app.authoshkola.model.schedule.Week;
+import radion.app.authoshkola.model.users.User;
 import radion.app.authoshkola.repositories.*;
 
+import java.security.Principal;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
+//TODO
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/student")
@@ -18,89 +28,114 @@ public class StudentController {
     private final StudentService studentService;
     private final RecordService recordService;
     private final WeekService weekService;
+    private final GroupService groupService;
+    private final UserService userService;
 
-    @PostMapping("/group")
-    public String allStudent(@RequestParam("id_group") Long groupId, @RequestParam("id_week") Long id_week, Model model) {
+    @GetMapping("/group/{id_group}/{id_week}")
+    public String allStudent(@PathVariable("id_group") Long groupId,
+                             @PathVariable("id_week") Long id_week,
+                             Principal principal, Model model) {
 
         model.addAttribute("students", studentService.findAllByGroup(groupId));
         model.addAttribute("instructor", instructorService.findByInstructorForIdGroup(groupId));
-        model.addAttribute("group", groupId);
+        model.addAttribute("group", groupService.findById(groupId));
         model.addAttribute("select_week", id_week);
+        model.addAttribute("role", userService.findRoleByEmail(principal.getName()));
         return "student/student_group_list";
     }
-//
-//    @GetMapping("/create")
-//    public String createStudent(Model model){
-//        model.addAttribute("groups", groupsService.findAll());
-//        model.addAttribute("role", RolesEnum.STUDENT);
-//        return "student/create_student";
-//    }
-//
-//    @PostMapping("/create")
-//    public String saveStudent(Student student){
-//        studentService.save(student);
-//        return "redirect:/students";
-//    }
-//
-//    @GetMapping("/update/{id}")
-//    public String updateFormStudent(@PathVariable("id") Long id, Model model){
-//        Student student = studentService.findById(id);
-//        model.addAttribute("student", student);
-//        model.addAttribute("group", groupsService.findById(student.getGroup_id()));
-//        model.addAttribute("groups", groupsService.findAll());
-//        return "student/update_form_student";
-//    }
-//
-//    @PostMapping("/update")
-//    public String updateStudent(UserUpdateDto student){
-//        studentService.update(student);
-//        return "redirect:/students";
-//    }
-//
-    @GetMapping("/profile/{id_week}")
-    public String home(Model model, @PathVariable("id_week") Long id_week){
 
-        StudentInfoDto studentInfoDto = studentService.getUserInfo("nuhul-esijo51@gmail.com");
+    @GetMapping("/create/{id_week}")
+    public String createStudent(Model model, @PathVariable Long id_week){
+        model.addAttribute("groups", groupService.findAll());
+        model.addAttribute("role", String.valueOf(RolesEnum.ROLE_STUDENT));
+        model.addAttribute("select_week", id_week);
+        model.addAttribute("birthday", LocalDate.now().toString());
+        return "student/create_student";
+    }
+
+    @PostMapping("/create")
+    public String saveStudent(@RequestParam("id_week") Long id_week,
+                              @RequestParam("group_id")
+                                    @NotNull(message = "{null.point.exception.group}") Long groupId,
+                              @Validated User student,
+                              BindingResult bindingResult,
+                              Model model){
+
+        if (bindingResult.hasErrors()){
+            model.addAttribute("role", student.getRole());
+            model.addAttribute("user", student);
+            model.addAttribute("birthday", student.getBirthday().toString());
+            model.addAttribute("group_select", groupId);
+            model.addAttribute("groups", groupService.findAll());
+            model.addAttribute("select_week", id_week);
+            HashMap<String, String> map = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error ->
+                    map.put(error.getField(), error.getDefaultMessage())
+            );
+            model.addAttribute("errors", map);
+            return "student/create_student";
+        }else {
+            studentService.save(student, groupId);
+            return "redirect:/student/all/" + id_week ;
+        }
+    }
+
+    @GetMapping("/update/{id_student}/{id_week}")
+    public String updateFormStudent(@PathVariable("id_student") Long idStudent, @PathVariable("id_week") Long idWeek, Model model){
+        UserUpdateDto student = studentService.findByIdUpdate(idStudent);
+        model.addAttribute("student", student);
+        model.addAttribute("group", student.getGroupId() != null ? groupService.findById(student.getGroupId()) : null);
+        model.addAttribute("groups", groupService.findAll());
+        model.addAttribute("select_week", idWeek);
+        model.addAttribute("birthday", student.getBirthday().toString());
+        return "student/update_form_student";
+    }
+
+    @PostMapping("/update")
+    public String updateStudent(
+            @RequestParam("id_week") Long weekId,
+            @Validated UserUpdateDto student,
+            BindingResult bindingResult,
+            Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("student", student);
+            if (student.getGroupId() != null){
+                model.addAttribute("group", groupService.findById(student.getGroupId()));
+            }
+            model.addAttribute("groups", groupService.findAll());
+            model.addAttribute("select_week", weekId);
+            model.addAttribute("birthday", student.getBirthday().toString());
+            HashMap<String, String> map = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error ->
+                        map.put(error.getField(), error.getDefaultMessage())
+            );
+            model.addAttribute("errors", map);
+            bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            return "student/update_form_student";
+        }else {
+            studentService.update(student);
+            return "redirect:/student/all/" + weekId;
+        }
+    }
+
+    @GetMapping("/profile/{id_week}")
+    public String home(Model model, @PathVariable("id_week") Long id_week, Principal principal){
+
+        StudentInfoDto studentInfoDto = studentService.getUserInfo(principal.getName());
 
         List<Week> weekList = weekService.findAllWeek();
         model.addAttribute("user_info", studentInfoDto);
         model.addAttribute("record_of_weeks", recordService.findAllRecordViewByWeek(id_week));
         model.addAttribute("weeks", weekList);
         model.addAttribute("select_week", id_week);
+        model.addAttribute("select_week_info", weekService.findById(id_week));
         return "profiles/profile";
     }
 
-/*    @PostMapping("/student-profile")
-    public String viewSchedule(@RequestParam("id_week") Long id_week, Model model, Principal principal){
-
-        UserInfoDto userInfoDto = studentService.getUserInfo(principal.getName());
-        var schedule = scheduleService.findAll();
-        var preview = weeksStudentService.viewScheduleOfWeek(id_week);
-        model.addAttribute("weeks", schedule);
-        for (Schedule s : schedule) {
-            if (s.getId().equals(id_week)){
-                model.addAttribute("select_week", s);
-            }
-        }
-        model.addAttribute("schedule_preview", preview);
-        model.addAttribute("user_info", userInfoDto);
-        model.addAttribute("weekSchedules", weeksStudentService.findAll());
-        return "profiles/student_profile";
-    }*/
-//
-//    @GetMapping("/student-group-list/{group_id}/{select_week}")
-//    private String studentListOfGroup(Model model, @PathVariable("group_id") Long group_id, @PathVariable("select_week") Long select_week){
-//        model.addAttribute("group", group_id);
-//        model.addAttribute("instructor", instructorService.findById(groupsService.findById(group_id).getInstructorId()));
-//        model.addAttribute("studentsGroup", studentService.findFindByStudentForGroupid(group_id));
-//        model.addAttribute("select_week", select_week);
-//        return "student/student_group_list";
-//    }
-//
-//    @GetMapping("/instructors/{select_week}")
-//    public String allInstructors(Model model, @PathVariable Long select_week){
-//        model.addAttribute("instructors", instructorService.findAll());
-//        model.addAttribute("select_week", select_week);
-//        return "student/instructors_list";
-//    }
+    @GetMapping("/all/{id_week}")
+    public String allStudent(Model model, @PathVariable Long id_week){
+        model.addAttribute("students", studentService.findAllPreview());
+        model.addAttribute("select_week", id_week);
+        return "student/students";
+    }
 }

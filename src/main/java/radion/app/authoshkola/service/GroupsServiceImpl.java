@@ -3,7 +3,6 @@ package radion.app.authoshkola.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import radion.app.authoshkola.ConnectionJDBC;
-import radion.app.authoshkola.model.dto.GroupInfoDto;
 import radion.app.authoshkola.model.schedule.Groups;
 import radion.app.authoshkola.repositories.GroupService;
 
@@ -15,13 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupsServiceImpl implements GroupService {
     private ConnectionJDBC connectionJDBC;
-    private InstructorServiceImpl instructorServiceImpl;
 
-    private final String countStudents = """
-            select COUNT(*) as count from users 
-                join users_group on users.users_id = users_group.fk_user_id
-                    where users_group.fk_group_id = ?;
-            """;
     private final String getAll = """
             select * from "group";
             """;
@@ -32,7 +25,9 @@ public class GroupsServiceImpl implements GroupService {
             insert into "group"(group_number, group_of_instructor_id) values(?,?);
             """;
     private final String delete = """
-            delete from "group" where group_id = ?;
+            update public.users_group set fk_group_id = null
+                where fk_group_id = ?;
+                    delete from "group" where "group".group_id = ?;
             """;
     private final String update = """
             update "group" set group_number = ?, group_of_instructor_id = ? where group_id = ?;
@@ -68,15 +63,17 @@ public class GroupsServiceImpl implements GroupService {
 
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                resultSet.next();
-                connection.close();
+                if (resultSet.next()) {
 
-                Groups groups = new Groups();
-                groups.setId(resultSet.getLong(1));
-                groups.setGroupNumber(resultSet.getInt(2));
-                groups.setInstructorId(resultSet.getLong(3));
+                    Groups groups = new Groups();
+                    groups.setId(resultSet.getLong(1));
+                    groups.setGroupNumber(resultSet.getInt(2));
+                    groups.setInstructorId(resultSet.getLong(3));
 
-                return groups;
+                    return groups;
+                }else {
+                    return null;
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -92,16 +89,17 @@ public class GroupsServiceImpl implements GroupService {
             preparedStatement.setLong(2, group.getInstructorId());
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Группа с данным номером уже есть");
         }
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long idGroup) {
         try (Connection connection = connectionJDBC.connect();
              PreparedStatement preparedStatement = connection.prepareStatement(delete)){
 
-            preparedStatement.setLong(1, id);
+            preparedStatement.setLong(1, idGroup);
+            preparedStatement.setLong(2, idGroup);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -120,34 +118,5 @@ public class GroupsServiceImpl implements GroupService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Integer countStudent(Long id) {
-        try (Connection connection = connectionJDBC.connect();
-             PreparedStatement preparedStatement = connection.prepareStatement(countStudents)) {
-                preparedStatement.setLong(1, id);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-                    return resultSet.getInt("count");
-                }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<GroupInfoDto> getListForGroupsDTO(){
-        List<GroupInfoDto> list = new ArrayList<>();
-        for (Groups group: findAll()) {
-            GroupInfoDto groupInfoDto = new GroupInfoDto();
-
-            groupInfoDto.setGroup(group);
-            groupInfoDto.setInstructor(instructorServiceImpl.findById(group.getInstructorId()));
-            groupInfoDto.setCountStudent(countStudent(group.getId()));
-
-            list.add(groupInfoDto);
-        }
-        return list;
     }
 }

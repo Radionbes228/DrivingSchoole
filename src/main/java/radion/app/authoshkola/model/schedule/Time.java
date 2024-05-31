@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class Time {
     @NotNull
     private Long id;
-
     @NotNull
     private java.sql.Time time;
 }

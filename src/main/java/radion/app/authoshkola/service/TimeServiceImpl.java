@@ -1,7 +1,6 @@
 package radion.app.authoshkola.service;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import radion.app.authoshkola.ConnectionJDBC;
 import radion.app.authoshkola.model.schedule.Time;
@@ -21,20 +20,15 @@ public class TimeServiceImpl implements TimeService {
             select * from time order by time;
             """;
     private final String getAllNot = """
-            select time.* from time
-                join public.record r on time.time_id <> r.fk_time_of_record
-                join public.week w on w.week_id = r.fk_week_id
-                join public.day_of_week dow on dow.day_id = r.fk_day_of_week
-                join public.users u on u.users_id = r.fk_student_id
-                join public.users_group ug on u.users_id = ug.fk_user_id
-                join public."group" g on g.group_id = ug.fk_group_id
-            where w.week_id = ? and dow.day_id = ? and g.group_id = ?;
-            """;
-    private final String getByTime = """
-            select * from time where time = ?;
-            """;
-    private final String save = """
-            insert into time(time) values(?);
+            SELECT t.* FROM time t
+            WHERE t.time_id NOT IN (
+                SELECT r.fk_time_of_record FROM public.record r
+                                                    JOIN public.users_group ug ON ug.fk_user_id = r.fk_student_id
+                                                    JOIN "group" g ON g.group_id = ug.fk_group_id
+                                                    JOIN day_of_week dow ON r.fk_day_of_week = dow.day_id
+                                                    JOIN public.week w ON w.week_id = r.fk_week_id
+                WHERE w.week_id = ? AND dow.day_id = ? AND g.group_id = ?
+            );
             """;
 
     @Override
@@ -89,99 +83,4 @@ public class TimeServiceImpl implements TimeService {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public Time findByTime(Time time) {
-        return null;
-    }
-
-    @Override
-    public Time findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public void save(Time time) {
-
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    @Override
-    public Integer getYear() {
-        return null;
-    }
-
-/*
-    @Override
-    public List<Time> findAll() {
-        List<Time> timeList = new ArrayList<>();
-        try {
-            Connection connection = connectionJDBC.connect();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(getAll);
-
-            while (resultSet.next()){
-                Time time = new Time();
-                time.setId(resultSet.getLong(1));
-                time.setTime(resultSet.getTime(2));
-
-                timeList.add(time);
-            }
-
-            connection.close();
-            return timeList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Time findByTime(Time time) {
-        try {
-            Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(getByTime);
-            preparedStatement.setString(1, time.getTime());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            connection.close();
-
-            Time returnTime = new Time();
-            returnTime.setId(resultSet.getLong(1));
-            returnTime.setTime(resultSet.getString(2));
-
-            return returnTime;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @Override
-    public Time findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public void save(Time time) {
-        try {
-            Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(save);
-            preparedStatement.setString(1, time.getTime());
-            preparedStatement.executeQuery();
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(Long id) {}
-
-    @Override
-    public Integer getYear(){
-        return Integer.valueOf(String.valueOf(Year.now()));
-    }*/
 }

@@ -44,7 +44,7 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public DayOfWeek findByid(Long idDay) {
+    public DayOfWeek findById(Long idDay) {
         try (Connection connection = connectionJDBC.connect();
              PreparedStatement preparedStatement = connection.prepareStatement(getByid))   {
 

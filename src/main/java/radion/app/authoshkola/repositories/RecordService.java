@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface RecordService {
     List<RecordViewDto> findAllRecordViewByWeek(Long id_week);
-    List<RecordViewDto> findAllRecordViewByWeekInst(Long id_week);
-
     void save(Record record);
 }

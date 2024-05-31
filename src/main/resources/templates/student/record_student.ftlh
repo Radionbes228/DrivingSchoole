@@ -21,7 +21,7 @@
                     <p class="h3">Запись студента</p>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Неделя</span>
-                        <input class="form-control" type="text" aria-label="basic-addon1" value="${week.startDateOfWeek} - ${week.lastDateOfWeek}">
+                        <input class="form-control" type="text" aria-label="basic-addon1" value="${week.startDateOfWeek} - ${week.lastDateOfWeek}" readonly>
                         <input hidden name="weekId" type="text" value="${week.id}">
                     </div>
                     <div class="input-group mb-3">
@@ -29,6 +29,7 @@
                         <input class="form-control" type="text" aria-label="basic-addon1" value="${day.dayName}" readonly>
                         <input hidden name="dayOfDayId" type="text" value="${day.id}">
                     </div>
+                    <input name="id_group" type="text" hidden="hidden" value="${id_group}">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Студент</span>
                         <select name="studentId" class="form-select" id="floatingSelect" aria-label="Floating label select example">
@@ -60,7 +61,7 @@
                                 <input class="btn btn-outline-primary" type="submit" value="Создать">
                             </div>
                             <div class="col">
-                                <a href="/instructor/profile/${week.id}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                                <a href="/group/schedule/${group_id}/${id_week}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
                             </div>
                         </div>
                     </div>

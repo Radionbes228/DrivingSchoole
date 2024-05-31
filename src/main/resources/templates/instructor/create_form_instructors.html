@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="container text-center">
+    <div class="row align-items-center">
+        <div class="col">
+            <form id="formMe" method="post" th:action="@{/instructor/create}" class="form">
+                <div style="max-width: 700px; margin: 0 auto; align-content: center">
+                    <div th:if="${errors != null}">
+                        <p class="h3">Создание студента</p>
+                        <div id="firstName" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('firstName') != null}" th:text="${errors.get('firstName')}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Фамилия</span>
+                            <input name="firstName" th:if="${user.firstName != null}" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" th:value="${user.firstName}">
+                            <input name="firstName" th:unless="${user.firstName != null}" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="name" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('name') != null}" th:text="${errors.get('name')}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Имя</span>
+                            <input name="name" th:if="${user.name != null}" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" th:value="${user.name}">
+                            <input name="name" th:unless="${user.name != null}" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="lastName" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('lastName') != null}" th:text="${errors.get('lastName')}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Отчество(если есть)</span>
+                            <input name="lastName" th:if="${user.lastName != null }" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" th:value="${user.lastName}">
+                            <input name="lastName" th:unless="${user.lastName != null }" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="email" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('email') != null}" th:text="${errors.get('email')}">
+                        </div>
+                        <div id="email" class="form-text" style="color: red"
+                             th:if="${email_exception != null}" th:text="${email_exception}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Почта</span>
+                            <input name="email" th:if="${user.email != null}" type="email" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" th:value="${user.email}">
+                            <input name="email" th:unless="${user.email != null}" type="email" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="password" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('password') != null}" th:text="${errors.get('password')}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Пароль</span>
+                            <input name="password" th:if="${user.password != null}" type="password" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" th:value="${user.password}">
+                            <input name="password" th:unless="${user.password != null}" type="password" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="phoneNumber" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('phoneNumber') != null}" th:text="${errors.get('phoneNumber')}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Номер телефона</span>
+                            <input name="phoneNumber" th:if="${user.phoneNumber != null}" maxlength="10" type="tel" class="form-control" aria-label="Username" aria-describedby="basic-addon1" th:value="${user.phoneNumber}">
+                            <input name="phoneNumber" th:unless="${user.phoneNumber != null}" maxlength="10" type="tel" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="birthday" class="form-text" style="color: red"
+                             th:if="${errors != null and errors.containsKey('birthday') != null}" th:text="${errors.get('birthday')}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Возраст</span>
+                            <input name="birthday" th:if="${birthday != null}" type="date" class="form-control" aria-label="Username" aria-describedby="basic-addon1"  th:value="${birthday}">
+                            <input name="birthday" th:unless="${birthday != null}" type="date" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+
+                        <label hidden="hidden">
+                            <input hidden="hidden" name="id_week" th:value="${select_week}">
+                        </label><br>
+                        <label hidden="hidden">
+                            <input hidden="hidden" name="role" th:value="${role}">
+                        </label>
+
+                        <div class="container text-center">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <input class="btn btn-outline-primary" type="submit" value="Создать">
+                                </div>
+                                <div class="col">
+                                    <a th:href="@{/admin/profile/{selectWeek}(selectWeek=${select_week})}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:unless="${errors != null}">
+                        <p class="h3">Создание студента</p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Фамилия</span>
+                            <input name="firstName" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Имя</span>
+                            <input name="name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Отчество(если есть)</span>
+                            <input name="lastName" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Почта</span>
+                            <input name="email" type="email" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Пароль</span>
+                            <input name="password" type="password" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Номер телефона</span>
+                            <input name="phoneNumber" type="tel" class="form-control" maxlength="10" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Возраст</span>
+                            <input name="birthday" type="date" class="form-control" aria-label="Username" th:value="${birthday}" aria-describedby="basic-addon1">
+                        </div>
+                        <label hidden="hidden">
+                            <input hidden="hidden" name="id_week" th:value="${select_week}">
+                        </label><br>
+                        <label hidden="hidden">
+                            <input hidden="hidden" name="role" th:value="${role}">
+                        </label>
+
+                        <div class="container text-center">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <input id="create" class="btn btn-outline-primary" type="submit" value="Создать">
+                                </div>
+                                <div class="col">
+                                    <a th:href="@{/admin/profile/{selectWeek}(selectWeek=${select_week})}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+</body>
+</html>

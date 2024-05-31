@@ -1,6 +1,7 @@
 package radion.app.authoshkola.repositories;
 
 import radion.app.authoshkola.model.dto.InstructorInfoDto;
+import radion.app.authoshkola.model.dto.InstructorUpdateDto;
 import radion.app.authoshkola.model.dto.StudentInfoDto;
 import radion.app.authoshkola.model.users.User;
 
@@ -11,9 +12,7 @@ public interface InstructorService {
     User findById(Long id);
     InstructorInfoDto getUserInfo(String email);
     User findByInstructorForIdGroup(Long id_group);
-    User findByEmail(String email);
 
     void save(User instructor);
-    void update(User instructor);
-    void delete(Long id);
+    void update(InstructorUpdateDto instructor);
 }

@@ -42,7 +42,7 @@
                                 <div class="container text-center">
                                     <div class="row align-items-left">
                                         <div class="col">
-                                            <h6>${instructor.name}</h6>
+                                            <h6>${instructor.firstName} ${instructor.name} <#if instructor.lastName??>${instructor.lastName}</#if></h6>
                                         </div>
                                         <div class="col">
                                             <h6>${instructor.email}</h6>
@@ -50,6 +50,11 @@
                                         <div class="col">
                                             <h6>${instructor.phoneNumber}</h6>
                                         </div>
+                                        <#if role == "ROLE_ADMIN">
+                                            <div class="col">
+                                                <a href="/instructor/update/${select_week}/${instructor.id}"><input class="btn btn-outline-primary" type="button" value="Изменить"></a>
+                                            </div>
+                                        </#if>
                                     </div>
                                 </div>
                             </div>
@@ -75,6 +80,12 @@
                 <#elseif role = "ROLE_INSTRUCTOR">
                     <#if select_week?has_content>
                         <a href="/instructor/profile/${select_week}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                    <#else>
+                        <a href="#"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                    </#if>
+                <#elseif role = "ROLE_ADMIN">
+                    <#if select_week?has_content>
+                        <a href="/admin/profile/${select_week}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
                     <#else>
                         <a href="#"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
                     </#if>

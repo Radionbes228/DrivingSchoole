@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface DayService {
     List<DayOfWeek> findAll();
-
-    DayOfWeek findByid(Long idDay);
+    DayOfWeek findById(Long idDay);
 }

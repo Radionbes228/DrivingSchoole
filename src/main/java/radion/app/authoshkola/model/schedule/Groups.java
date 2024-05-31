@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 public class Groups {
 
     private Long id;
-
+    @NotNull(message = "{null.point.exception.groupNumber}")
     private Integer groupNumber;
-
+    @NotNull(message = "{null.point.exception.instructor}")
     private Long instructorId;
 }

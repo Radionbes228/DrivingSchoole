@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import radion.app.authoshkola.ConnectionJDBC;
 import radion.app.authoshkola.model.dto.InstructorInfoDto;
+import radion.app.authoshkola.model.dto.InstructorUpdateDto;
 import radion.app.authoshkola.model.roles.RolesEnum;
 import radion.app.authoshkola.model.schedule.Groups;
 import radion.app.authoshkola.model.users.User;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+//TODO
 @Controller
 @AllArgsConstructor
 public class InstructorServiceImpl implements InstructorService {
@@ -210,7 +212,7 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public void update(User instructor) {
+    public void update(InstructorUpdateDto instructor) {
         try (Connection connect = connectionJDBC.connect();
              PreparedStatement preparedStatement = connect.prepareStatement(update)){
 
@@ -222,45 +224,6 @@ public class InstructorServiceImpl implements InstructorService {
             preparedStatement.setString(6, instructor.getPhoneNumber());
             preparedStatement.setLong(7, instructor.getId());
             preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(Long id_instructor) {
-        try (Connection connection = connectionJDBC.connect();
-             PreparedStatement preparedStatement = connection.prepareStatement(delete)){
-
-            preparedStatement.setLong(1, id_instructor);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        try(Connection connection = connectionJDBC.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(getByEmail)) {
-
-            preparedStatement.setString(1, email);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if(resultSet.next()){
-                    User instructors = new User();
-                    instructors.setId(resultSet.getLong(1));
-                    instructors.setFirstName(resultSet.getString(2));
-                    instructors.setName(resultSet.getString(3));
-                    instructors.setLastName(resultSet.getString(4));
-                    instructors.setBirthday(resultSet.getDate(5));
-                    instructors.setEmail(resultSet.getString(6));
-                    instructors.setPhoneNumber(resultSet.getString(8));
-
-                    return instructors;
-                }else {
-                    throw new NoSuchElementException(String.format("Not find user by email = %s", email));
-                }
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

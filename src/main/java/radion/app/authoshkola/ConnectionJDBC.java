@@ -1,11 +1,9 @@
 package radion.app.authoshkola;
 
-
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import radion.app.authoshkola.exception.BadConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,7 +24,7 @@ public class ConnectionJDBC {
         try {
             return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            throw new BadConnection(e);
+            throw new SQLException("Error connect for data base: " + e);
         }
     }
 }

@@ -15,12 +15,24 @@
     <div class="container text-center" style="margin-top: 50px">
         <div class="row align-items-center">
             <div class="col">
-                <span class="input-group-text" style="text-align: left">Группа: ${group}</span>
+                <span class="input-group-text" style="text-align: left">Группа: ${group.groupNumber}</span>
             </div>
             <div class="col">
                 <span class="input-group-text"
                       style="text-align: left">${instructor.firstName} ${instructor.name}</span>
             </div>
+             <#if role == "ROLE_ADMIN">
+                 <div class="col">
+                     <a href="/group/update/${group.id}/${select_week}"><input class="btn btn-outline-primary" type="button" value="Изменить"></a>
+                 </div>
+                 <div class="col">
+                     <form action="/group/delete" method="post">
+                         <input name="group_id" hidden="hidden" type="text" value="${group.id}">
+                         <input name="id_week" hidden="hidden" type="text" value="${select_week}">
+                         <input class="btn btn-outline-primary" type="submit" value="Удалить">
+                     </form>
+                 </div>
+             </#if>
         </div>
     </div>
 </div>
@@ -32,7 +44,11 @@
                 <div class="container text-center">
                     <div class="row align-items-left">
                         <div class="col">
-                            <h6 style="text-align: left">${student.firstName} ${student.name} ${student.lastName}.</h6>
+                            <#if student.lastName??>
+                                <h6 style="text-align: left">${student.firstName} ${student.name} ${student.lastName}</h6>
+                            <#else>
+                                <h6 style="text-align: left">${student.firstName} ${student.name}</h6>
+                            </#if>
                         </div>
                         <div class="col">
                             <h6 style="text-align: left">${student.email}</h6>
@@ -54,11 +70,18 @@
 <div class="container text-center">
     <div class="row align-items-center">
         <div class="col">
-            <#if select_week?has_content>
-                <a href="/student/profile/${select_week}"><input class="btn btn-outline-primary" type="button"
+            <#if role == "ROLE_STUDENT">
+                <#if select_week?has_content>
+                    <a href="/student/profile/${select_week}"><input class="btn btn-outline-primary" type="button"
+                                                                     value="Назад"></a>
+                <#else>
+                    <a href="#"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+                </#if>
+            <#elseif role == "ROLE_INSTRUCTOR">
+                <a href="/group/schedule/${group.id}/${select_week}"><input class="btn btn-outline-primary" type="button"
                                                                  value="Назад"></a>
-            <#else>
-                <a href="#"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
+            <#elseif role == "ROLE_ADMIN">
+                <a href="/admin/profile/${select_week}"><input class="btn btn-outline-primary" type="button" value="Назад"></a>
             </#if>
         </div>
     </div>

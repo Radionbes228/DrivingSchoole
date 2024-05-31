@@ -1,18 +1,17 @@
-/*
-package radion.app.authoshkola.config.security.student;
+package radion.app.authoshkola.config.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import radion.app.authoshkola.model.users.Student;
+import radion.app.authoshkola.model.users.User;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class StudentUserDetails implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
     private final User student;
 
@@ -53,4 +52,3 @@ public class StudentUserDetails implements UserDetails {
         return true;
     }
 }
-*/
